@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 # Create your views here.
 from django.http import HttpResponse
@@ -12,8 +12,8 @@ def blog_single(request, pid):
     print(f"Target PID: {pid}")
 
     try:
-        # مرحله اول: تلاش برای گرفتن پست بدون هیچ شرط اضافه‌ای
-        post = Post.objects.get(pk=pid)
+        posts = Post.objects.filter(status=1)
+        post = get_object_or_404(posts, pk=pid)
         
         print(f"SUCCESS: Post found!")
         print(f"DEBUG: Title: {post.title}")
