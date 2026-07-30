@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_tags %}
 
 <div class="col-lg-4 sidebar-widgets">
     <div class="widget-wrap">
@@ -9,8 +10,8 @@
             </form>
             {% include 'blog/blog_writer.html' %}
             {% include 'blog/blog_ads.html' %}
-            {% include 'blog/blog_papulerpost.html' %}
-            {% include 'blog/blog_catgories.html' %}
+            {% papuler_post %}
+            {% catgories %}
             {% include 'blog/blog_newsletter.html' %}
             {% include 'blog/blog_tags.html' %}
         </div>	
