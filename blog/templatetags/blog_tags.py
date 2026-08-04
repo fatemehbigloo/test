@@ -22,13 +22,17 @@ def papuler_post():
 
 
 
-@register.inclusion_tag('blog/blog_catgories.html')
-def catgories():
-    posts = Post.objects.filter(status=1).order_by('category')
-    all_categories = Category.objects.all()
-    cta_dict = {}
-    #count of category
-    for cat in all_categories:
+@register.inclusion_tag('blog/blog_categories.html')  # تغییر مسیر به فایل موجود
+def categories():
+    categories = Category.objects.all()
+    # ایجاد لیستی از آبجکت‌های Category با تعداد پست‌ها
+    category_list = []
+    for cat in categories:
         count = Post.objects.filter(status=1, category=cat).count()
-        cta_dict[cat] = count
-    return {"catgories": cta_dict}
+        category_list.append({
+            'category': cat,
+            'count': count
+        })
+    return {'category_list': category_list}
+
+

@@ -1,26 +1,38 @@
+# blog/views.py
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post
-# Create your views here.
-from django.http import HttpResponse
-def blog_views(request):
+from blog.models import Post, Category
+
+def blog_views(request, cat=None):
     posts = Post.objects.filter(status=1)
-    context = {'posts' :posts}
-    return render(request,'blog/blog_views.html', context)
+    categories = Category.objects.all()  # اضافه کنید
+    
+    if cat:
+        posts = Post.objects.filter(category__name=cat)
+    
+    context = {
+        'posts': posts,
+        'categories': categories,  # اضافه کنید
+    }
+    return render(request, 'blog/blog_views.html', context)
 
 def blog_single(request, pid):
-    print("\n--- DEBUG START ---")
-    print(f"Target PID: {pid}")
+    posts = Post.objects.filter(status=1)
+    post = get_object_or_404(posts, pk=pid)
+    categories = Category.objects.all()  # اضافه کنید
+    
+    return render(request, 'blog/blog_single.html', {
+        'post': post,
+        'categories': categories,  # اضافه کنید
+    })
 
-    try:
-        posts = Post.objects.filter(status=1)
-        post = get_object_or_404(posts, pk=pid)
-        
-        print(f"SUCCESS: Post found!")
-        print(f"DEBUG: Title: {post.title}")
-        print(f"DEBUG: Status: {post.status}")
-        print(f"DEBUG: Content: {post.content[:20]}...") # فقط ۲۰ کاراکتر اول برای تست
-        
-        return render(request, 'blog/blog_single.html', {'post': post})
-
-    except Post.DoesNotExist:
-        print(f"ERROR: Post")
+def blog_category(request, cat):
+    category_obj = get_object_or_404(Category, name=cat)
+    posts = Post.objects.filter(category__name=category_obj, status=1)
+    categories = Category.objects.all()  # اضافه کنید
+    
+    context = {
+        'posts': posts,
+        'category': category_obj,
+        'categories': categories,  # اضافه کنید
+    }
+    return render(request, 'blog/blog_views.html', context)
