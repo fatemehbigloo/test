@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post
+from blog.models import Post, Category
 # Create your views here.
 from django.http import HttpResponse
 def blog_views(request):
@@ -24,3 +24,21 @@ def blog_single(request, pid):
 
     except Post.DoesNotExist:
         print(f"ERROR: Post")
+
+
+def blog_category(request, cat):
+    category_obj = get_object_or_404(Category, name=cat)
+    posts = Post.objects.filter(category__name=category_obj, status=1)
+    context = {
+        'posts': posts,
+        'category': category_obj 
+    }
+    return render(request,'blog/blog_views.html', context)
+
+"""
+def blog_category(request, cat):
+    posts = Post.objects.filter(status=1)
+    context = {'posts' :posts}
+    posts = Post.objects.filter(category=cat, status=1)
+    return render(request,'blog/blog_views.html', context)
+    """
