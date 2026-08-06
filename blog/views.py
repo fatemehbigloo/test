@@ -2,16 +2,14 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
 
-def blog_views(request, cat=None):
-    posts = Post.objects.filter(status=1)
-    categories = Category.objects.all()  # اضافه کنید
-    
-    if cat:
-        posts = Post.objects.filter(category__name=cat)
+def blog_views(request, cat=None):  # cat رو اختیاری کن
+    if cat:  # اگه cat توی آدرس بود
+        posts = Post.objects.filter(status=True, category__name=cat)
+    else:  # اگه نبود، همه پست‌ها رو نشون بده
+        posts = Post.objects.filter(status=True)
     
     context = {
         'posts': posts,
-        'categories': categories,  # اضافه کنید
     }
     return render(request, 'blog/blog_views.html', context)
 
@@ -36,3 +34,4 @@ def blog_category(request, cat):
         'categories': categories,  # اضافه کنید
     }
     return render(request, 'blog/blog_views.html', context)
+
