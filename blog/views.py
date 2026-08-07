@@ -40,6 +40,7 @@ def blog_search(request):
     
     if request.method == 'GET':
         posts = posts.filter(content__contains = request.GET.get('s'))
-        
+        if s := request.GET.get('s'):
+            posts = posts.filter(content__contains = s)
     context = {'posts': posts,}
     return render(request, 'blog/blog_views.html', context)
