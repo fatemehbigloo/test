@@ -1,7 +1,7 @@
 # blog/views.py
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def blog_views(request, **kwargs):
     posts = Post.objects.filter(status=1)  # cat رو اختیاری کن
@@ -9,7 +9,15 @@ def blog_views(request, **kwargs):
         posts = Post.objects.filter(status=True, category__name=kwargs['cat'])
     if kwargs.get('username') != None:
         posts = Post.objects.filter(status=True, author__username=kwargs['username'])
-    
+
+    posts = Paginator(posts, 2)
+    try :  
+        page_number = request.GET.get("page")
+        posts = posts.get_page(page_number)
+    except PageNotAnInteger :
+        posts = posts.get_page(1)
+    except EmptyPage :
+        posts = posts.get_page(1)
     context = {'posts': posts,}
     return render(request, 'blog/blog_views.html', context)
 
