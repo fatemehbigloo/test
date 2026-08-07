@@ -2,15 +2,15 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
 
-def blog_views(request, cat=None):  # cat رو اختیاری کن
-    if cat:  # اگه cat توی آدرس بود
-        posts = Post.objects.filter(status=True, category__name=cat)
-    else:  # اگه نبود، همه پست‌ها رو نشون بده
-        posts = Post.objects.filter(status=True)
+
+def blog_views(request, **kwargs):
+    posts = Post.objects.filter(status=1)  # cat رو اختیاری کن
+    if kwargs.get('cat') != None:  # اگه cat توی آدرس بود
+        posts = Post.objects.filter(status=True, category__name=kwargs['cat'])
+    if kwargs.get('username') != None:
+        posts = Post.objects.filter(status=True, author__username=kwargs['username'])
     
-    context = {
-        'posts': posts,
-    }
+    context = {'posts': posts,}
     return render(request, 'blog/blog_views.html', context)
 
 def blog_single(request, pid):
@@ -35,3 +35,11 @@ def blog_category(request, cat):
     }
     return render(request, 'blog/blog_views.html', context)
 
+def blog_search(request):
+    posts = Post.objects.filter(status=1)  # cat رو اختیاری کن
+    
+    if request.method == 'GET':
+        posts = posts.filter(content__contains = request.GET.get('s'))
+        
+    context = {'posts': posts,}
+    return render(request, 'blog/blog_views.html', context)
