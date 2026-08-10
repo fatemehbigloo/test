@@ -62,14 +62,14 @@
       <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">
           <div id="logo">
-            <a href="{% url 'index' %}"
+            <a href="{% url 'website:index' %}"
               ><img src="{% static 'img/logo.png' %}" alt="" title=""
             /></a>
           </div>
           <nav id="nav-menu-container">
             <ul class="nav-menu">
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'about'%}">About</a></li>
+              <li><a href="{% url 'website:index' %}">Home</a></li>
+              <li><a href="{% url 'website:about'%}">About</a></li>
               <li><a href="{% url 'blog:home'  %}">Blog Home</a></li>
 
 
@@ -90,7 +90,7 @@
                   </li>
                 </ul>
               </li>
-              <li><a href="{% url 'contact' %}">Contact</a></li>
+              <li><a href="{% url 'website:contact' %}">Contact</a></li>
             </ul>
           </nav>
           <!-- #nav-menu-container -->
@@ -149,31 +149,31 @@
               </p>
               <div id="mc_embed_signup">
                 <form
-                  target="_blank"
-                  action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                  method="get"
-                  class="subscription relative"
-                >
-                  <div class="input-group d-flex flex-row">
-                    <input
-                      name="EMAIL"
-                      placeholder="Email Address"
-                      onfocus="this.placeholder = ''"
-                      onblur="this.placeholder = 'Email Address '"
-                      required=""
-                      type="email"
-                    />
-                    <button class="btn bb-btn">
-                      <span class="lnr lnr-location"></span>
-                    </button>
-                  </div>
-                  <div class="mt-10 info"></div>
-                </form>
+                action="{% url 'website:newsletter' %}"
+                method="post"
+                id="newsletter-form"
+              >
+                {% csrf_token %}
+                <div class="input-group d-flex flex-row">
+                  <input
+                    name="email"   
+                    placeholder="Email Address"
+                    onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = 'Email Address '"
+                    required=""
+                    type="email"
+                  />
+                  <button class="btn bb-btn" type="submit">
+                    <span class="lnr lnr-location"></span>
+                  </button>
+                </div>
+                <div class="mt-10 info"></div>
+              </form>
               </div>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="single-footer-widget mail-chimp">
+            <div class="single-footer-widget">
               <h6 class="mb-20">InstaFeed</h6>
               <ul class="instafeed d-flex flex-wrap">
                 <li><img src="{% static 'img/i1.jpg' %}" alt="" /></li>
@@ -214,11 +214,15 @@
     </footer>
     <!-- End footer Area -->
 
-    <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
+    <!--
+    
+
+    -->
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
     <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
     <script src="{% static 'js/easing.min.js' %}"></script>
     <script src="{% static 'js/hoverIntent.js' %}"></script>
     <script src="{% static 'js/superfish.min.js' %}"></script>
@@ -228,5 +232,6 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/mail-script.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    
   </body>
 </html>
